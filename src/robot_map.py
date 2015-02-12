@@ -12,23 +12,27 @@ class RobotMap:
     
     # For example to map the left and right motors, you could define the
     # following variables to use with your drivetrain subsystem.
-    Ltal = CANTalon(0)
-    Rtal = CANTalon(1)
-    Ltal.enableBrakeMode(True)
-    Rtal.enableBrakeMode(True)
+    left_talon = CANTalon(0)
+    right_talon = CANTalon(1)
+    nostril_tal = CANTalon(2)
+    left_talon.enableBrakeMode(True)
+    right_talon.enableBrakeMode(True)
+    
+    encoder_ticks = 360
+    wheel_d = 8/12
     
     right_encoder = Encoder(0,1)
     right_encoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
+    right_encoder.setDistancePerPulse(RobotMap.wheel_d/RobotMap.encoder_ticks)
     left_encoder = Encoder(2,3)
     left_encoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
-    chassis = EncoderDrive(Jaguar(0), Jaguar(1), leftEncoder=left_encoder, rightEncoder=right_encoder)
-    #nostril_window_motor = Jaguar(2)
+    left_encoder.setDistancePerPulse(RobotMap.wheel_d/RobotMap.encoder_ticks)
+    chassis = EncoderDrive(left_talon, right_talon, leftEncoder=left_encoder, rightEncoder=right_encoder)
     nostril_switch = DigitalInput(4)
     nostril_solenoid = Solenoid(0)
     bakery_solenoid = Solenoid(1)
     bakery_switch_r = DigitalInput(5)
     bakery_switch_l = DigitalInput(6)
     compressor = Compressor(0)
-    encoder_ticks = 250
-    wheel_d = 8/12
+    
     

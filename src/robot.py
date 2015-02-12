@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from wpilib import *
-
+from robot_map import RobotMap
 class MyRobot(IterativeRobot):
     
     def robotInit(self):
