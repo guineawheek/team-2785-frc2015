@@ -23,10 +23,10 @@ class RobotMap:
     
     right_encoder = Encoder(0,1)
     right_encoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
-    right_encoder.setDistancePerPulse(RobotMap.wheel_d/RobotMap.encoder_ticks)
+    right_encoder.setDistancePerPulse(wheel_d/encoder_ticks)
     left_encoder = Encoder(2,3)
     left_encoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
-    left_encoder.setDistancePerPulse(RobotMap.wheel_d/RobotMap.encoder_ticks)
+    left_encoder.setDistancePerPulse(wheel_d/RobotMap.encoder_ticks)
     chassis = EncoderDrive(left_talon, right_talon, leftEncoder=left_encoder, rightEncoder=right_encoder)
     nostril_switch = DigitalInput(4)
     nostril_solenoid = Solenoid(0)
