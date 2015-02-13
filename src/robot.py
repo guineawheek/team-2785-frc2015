@@ -16,8 +16,19 @@ class MyRobot(IterativeRobot):
         SmartDashboard.putNumber("Nostril talon speed, put values 0 to 1: ", 1)
     def autonomousPeriodic(self):
         """This function is called periodically during autonomous."""
-        pass
-
+        """
+        Strategy:
+            move forward 4 feet until recycle limit activated.
+            pick up tote.
+            move back 1 foot.
+            rotate 90 degrees.
+            move forward 2 feet
+            rotate 45 degrees.
+            move forward 2 feet.
+            put container down.
+            back away 1 foot.
+        
+        """
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
         self.doBindings()

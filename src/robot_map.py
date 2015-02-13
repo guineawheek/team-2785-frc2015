@@ -38,5 +38,11 @@ class RobotMap:
     bakery_switch_r = DigitalInput(5)
     bakery_switch_l = DigitalInput(6)
     compressor = Compressor(0)
+class nostril_grabber:
+    def __init__(self, motor, switch):
+        self.motor = motor
+        self.switch = switch
+    def lift(self):
+        pass
     
     
