@@ -21,7 +21,7 @@ class RobotMap:
     nostril_talon.enableBrakeMode(True)
     
     encoder_ticks = 360
-    wheel_d = 8/12
+    wheel_d = 8
     
     right_encoder = Encoder(0,1)
     right_encoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)

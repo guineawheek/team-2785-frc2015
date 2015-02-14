@@ -9,8 +9,8 @@ class EncoderDrive(RobotDrive):
     '''
     classdocs
     '''
-    kRight = [-1, 1]
-    kLeft = [1, -1]
+    kRight = [1, -1]
+    kLeft = [-1, 1]
     kStraight = [1, 1]
     def __init__(self, *args, **kwargs ):
         """
@@ -24,49 +24,25 @@ class EncoderDrive(RobotDrive):
         """
         self.leftEncoder = kwargs.pop("leftEncoder")
         self.rightEncoder = kwargs.pop("rightEncoder")
+        self.__addattr("p", 0.5, kwargs)
+        self.__addattr("i", 0, kwargs)
+        self.__addattr("d", 0, kwargs)
+        self.__addattr("percentErr", 2, kwargs)
         super().__init__(*args, **kwargs)
         self.leftEncoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
         self.rightEncoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
-        self.leftPid = PIDController(0.5, 0, 0, self.leftEncoder.pidGet, self.__pidwrite_left)
-        self.rightPid = PIDController(0.5, 0, 0, self.rightEncoder.pidGet, self.__pidwrite_right)
-        self.leftPid.setPercentTolerance(5)
-        self.rightPid.setPercentTolerance(5)
-    def PidDrive(self, outputMagnitude, curve, distance):
+        self.leftPid = PIDController(self.p, self.i, self.d, self.leftEncoder.pidGet, self.__pidwrite_left)
+        self.rightPid = PIDController(self.p, self.i, self.d, self.rightEncoder.pidGet, self.__pidwrite_right)
+        self.leftPid.setPercentTolerance(self.percentErr)
+        self.rightPid.setPercentTolerance(self.percentErr)
+    def pidDrive(self, power, direction, dist=EncoderDrive.kStraight):
         self.leftPid.disable()
         self.rightPid.disable()
         self.stopMotor()
         self.leftEncoder.reset()
         self.rightEncoder.reset()
-        if curve < 0:
-            value = math.log(-curve)
-            ratio = (value - self.sensitivity) / (value + self.sensitivity)
-            if ratio == 0:
-                ratio = .0000000001
-            leftOutput = outputMagnitude / ratio
-            rightOutput = outputMagnitude
-        elif curve > 0:
-            value = math.log(curve)
-            ratio = (value - self.sensitivity) / (value + self.sensitivity)
-            if ratio == 0:
-                ratio = .0000000001
-            leftOutput = outputMagnitude
-            rightOutput = outputMagnitude / ratio
-        else:
-            leftOutput = outputMagnitude
-            rightOutput = outputMagnitude
-            self.leftPid.setSetpoint(leftOutput*distance)
-            self.rightPid.setSetpoint(rightOutput*distance)
-            self.leftPid.enable()
-            self.rightPid.enable()
-        return [leftOutput*distance, rightOutput*distance]
-    def pidDrive(self, power, direction, dist):
-        self.leftPid.disable()
-        self.rightPid.disable()
-        self.stopMotor()
-        self.leftEncoder.reset()
-        self.rightEncoder.reset()
-        self.leftPid.setSetpoint(direction*dist)
-        self.rightPid.setSetpoint(direction*dist)
+        self.leftPid.setSetpoint(direction*dist[0])
+        self.rightPid.setSetpoint(direction*dist[1])
     def PidDone(self):
         return self.leftPid.onTarget() and self.rightPid.onTarget()
     def __pidwrite_left(self, v):
@@ -77,3 +53,9 @@ class EncoderDrive(RobotDrive):
         """Wrapper around self.rearLeftMotor.pidwrite to feed MotorSafety. Should not be called directly."""
         self.rearRightMotor.pidWrite(-v)
         self.feed()
+    def __addattr(self, arg, default, kwargs):
+        try:
+            setattr(self, arg, default)
+            kwargs.pop(arg)
+        except:
+            pass
