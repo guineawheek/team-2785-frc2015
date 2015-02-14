@@ -41,26 +41,3 @@ class RobotMap:
     bakery_switch_l = DigitalInput(6)
     compressor = Compressor(0)
     
-class nostril_grabber:
-    kLiftingTime = 10
-    def __init__(self, motor, switch):
-        self.motor = motor
-        self.switch = switch
-        self.__lifting = False
-        self.__lifting_timestamp = 0
-    def lift(self):
-        self.__lifting = True
-        self.motor.set(1)
-        self.__lifting_timestamp = time()
-    def lower(self):
-        self.__lifting = True
-        self.motor.set(-1)
-        self.__lifting_timestamp = time()
-    def lift_update(self):
-        self.motor.feed()
-        if time() >= self.__lifting_timestamp + nostril_grabber.kLiftingTime:
-            self.motor.stopMotor()
-            self.__lifting = False
-    def update(self):
-        if self.__lifting:
-            self.lift_update()
