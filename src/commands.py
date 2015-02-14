@@ -20,7 +20,7 @@ class moveToTote(command):
     def __init__(self, robotclass):
         self.bot = robotclass
     def start(self):
-        self.bot.chassis.drive(-0.75, 0)
+        self.bot.chassis.drive(0.75, 0)
     def stop(self):
         self.bot.chassis.stopMotor()
     def update(self):

@@ -2,6 +2,7 @@
 
 from wpilib import *
 from robot_map import RobotMap
+from PidDrive import EncoderDrive
 import commands as c
 class MyRobot(IterativeRobot):
     
@@ -15,11 +16,31 @@ class MyRobot(IterativeRobot):
         self.pwr = 1
         self.controlDir = 1
         self.currentCommand = c.command()
+        self.commands = [
+            c.moveToTote(self.robot),
+            c.moveTote(self.robot, True),
+            c.move(self.robot, -12),
+            c.move(self.robot, self.robot.dist_for_360 * 0.25, direction=EncoderDrive.kRight),
+            c.move(self.robot, 2*12),
+            c.move(self.robot, self.robot.dist_for_360 * 0.125, direction=EncoderDrive.kRight),
+            c.move(self.robot, 2*12),
+            c.moveTote(self.robot, False),
+            c.move(self.robot, -12)
+        ]
         SmartDashboard.putNumber("Nostril talon speed, put values 0 to 1: ", 1)
+        SmartDashboard.putBoolean("Reset autonomous commands on next enable? ", True)
     def autonomousInit(self):
         self.commands = [
-                         
-        ]
+            c.moveToTote(self.robot),
+            c.moveTote(self.robot, True),
+            c.move(self.robot, -12),
+            c.move(self.robot, self.robot.dist_for_360 * 0.25, direction=EncoderDrive.kRight),
+            c.move(self.robot, 2*12),
+            c.move(self.robot, self.robot.dist_for_360 * 0.125, direction=EncoderDrive.kRight),
+            c.move(self.robot, 2*12),
+            c.moveTote(self.robot, False),
+            c.move(self.robot, -12)
+        ] if SmartDashboard.getBoolean("Reset autonomous commands on next enable? ") else self.commands
     def autonomousPeriodic(self):
         """This function is called periodically during autonomous."""
         """
@@ -33,7 +54,6 @@ class MyRobot(IterativeRobot):
             move forward 2 feet.
             put container down.
             back away 1 foot.
-            37.5 in
         """
         if self.currentCommand.done():
             self.currentCommand.stop()
@@ -41,8 +61,7 @@ class MyRobot(IterativeRobot):
             self.currentCommand.run()
             return
         else:
-            self.currentCommand.update()
-                
+            self.currentCommand.update() 
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
         self.doBindings()
@@ -68,9 +87,9 @@ class MyRobot(IterativeRobot):
         if self.happystick.getRawButton(6):
             self.robot.left_encoder.reset()
             self.robot.right_encoder.rightEncoder.reset()
-        if self.happystick.getRawButton(11):
+        if self.happystick.getRawButton(8):
             self.controlDir = 1
-        elif self.happystick.getRawButton(10):
+        elif self.happystick.getRawButton(9):
             self.controlDir = -1
     def updateData(self):
         with SmartDashboard as s:
