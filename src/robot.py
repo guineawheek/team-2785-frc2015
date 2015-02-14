@@ -27,8 +27,9 @@ class MyRobot(IterativeRobot):
             c.moveTote(self.robot, False),
             c.move(self.robot, -12)
         ]
-        SmartDashboard.putNumber("Nostril talon speed, put values 0 to 1: ", 1)
+        SmartDashboard.putNumber("Nostril talon during teleop, put values 0 to 1: ", 1)
         SmartDashboard.putBoolean("Reset autonomous commands on next enable? ", True)
+        SmartDashboard.putNumber("Speed knob offset?", 0.4)
     def autonomousInit(self):
         self.commands = [
             c.moveToTote(self.robot),
@@ -70,7 +71,7 @@ class MyRobot(IterativeRobot):
         """This function is called periodically during test mode."""
         pass
     def doBindings(self):
-        self.pwr = (self.happystick.getZ() + 2) / 2
+        self.pwr = (self.happystick.getZ() + 2) / 2 + SmartDashboard.getNumber("Speed knob offset?")
         self.robot.chassis.arcadeDrive(self.pwr * self.happystick.getY() * self.controlDir, self.pwr * self.happystick.getX() * self.controlDir)
         if self.happystick.getRawButton(3):
             self.robot.bakery_solenoid.set(True)

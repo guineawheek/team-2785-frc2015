@@ -28,7 +28,7 @@ class moveToTote(command):
     def done(self):
         return self.bot.nostril_switch.get()
 class moveTote(command):
-    kLiftingTime = 10
+    kLiftingTime = 2
     def __init__(self, robotclass, up=True):
         self.motor = robotclass.nostril_talon
         self.up = up
