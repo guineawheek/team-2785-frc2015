@@ -2,6 +2,7 @@
 
 from wpilib import *
 from robot_map import RobotMap
+import commands as c
 class MyRobot(IterativeRobot):
     
     def robotInit(self):
@@ -13,7 +14,12 @@ class MyRobot(IterativeRobot):
         self.happystick = Joystick(0)
         self.pwr = 1
         self.controlDir = 1
+        self.currentCommand = c.command()
         SmartDashboard.putNumber("Nostril talon speed, put values 0 to 1: ", 1)
+    def autonomousInit(self):
+        self.commands = [
+                         
+        ]
     def autonomousPeriodic(self):
         """This function is called periodically during autonomous."""
         """
@@ -27,8 +33,16 @@ class MyRobot(IterativeRobot):
             move forward 2 feet.
             put container down.
             back away 1 foot.
-        
+            37.5 in
         """
+        if self.currentCommand.done():
+            self.currentCommand.stop()
+            self.currentCommand = self.commands.pop(0)
+            self.currentCommand.run()
+            return
+        else:
+            self.currentCommand.update()
+                
     def teleopPeriodic(self):
         """This function is called periodically during operator control."""
         self.doBindings()
@@ -60,8 +74,8 @@ class MyRobot(IterativeRobot):
             self.controlDir = -1
     def updateData(self):
         with SmartDashboard as s:
-            s.putNumber("Left encoder (feet):", self.robot.left_encoder.get())
-            s.putNumber("Right encoder (feet):", self.robot.right_encoder.get())
+            s.putNumber("Left encoder (in):", self.robot.left_encoder.get())
+            s.putNumber("Right encoder (in):", self.robot.right_encoder.get())
             s.putNumber("Joystick speed setting (teleop only):", (self.joystick.getZ() + 2) / 2)
             s.putNumber("Left bakery switch pressed? ", self.robot.bakery_switch_l.get())
             s.putNumber("Right bakery switch pressed? ", self.robot.bakery_switch_r.get())

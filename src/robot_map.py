@@ -22,6 +22,7 @@ class RobotMap:
     
     encoder_ticks = 360
     wheel_d = 8
+    dist_for_360 = 37.5 * PI 
     
     right_encoder = Encoder(0,1)
     right_encoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
@@ -39,6 +40,7 @@ class RobotMap:
     bakery_switch_r = DigitalInput(5)
     bakery_switch_l = DigitalInput(6)
     compressor = Compressor(0)
+    
 class nostril_grabber:
     kLiftingTime = 10
     def __init__(self, motor, switch):

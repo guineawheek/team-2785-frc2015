@@ -27,24 +27,30 @@ class EncoderDrive(RobotDrive):
         self.__addattr("p", 0.5, kwargs)
         self.__addattr("i", 0, kwargs)
         self.__addattr("d", 0, kwargs)
-        self.__addattr("percentErr", 2, kwargs)
+        self.__addattr("maxerr", 0.5, kwargs)
         super().__init__(*args, **kwargs)
         self.leftEncoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
         self.rightEncoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
         self.leftPid = PIDController(self.p, self.i, self.d, self.leftEncoder.pidGet, self.__pidwrite_left)
         self.rightPid = PIDController(self.p, self.i, self.d, self.rightEncoder.pidGet, self.__pidwrite_right)
-        self.leftPid.setPercentTolerance(self.percentErr)
-        self.rightPid.setPercentTolerance(self.percentErr)
-    def pidDrive(self, power, direction, dist=EncoderDrive.kStraight):
-        self.leftPid.disable()
-        self.rightPid.disable()
-        self.stopMotor()
+        self.setMaxError(self.maxerr)
+    def setMaxError(self, err):
+        self.leftPid.setAbsoluteTolerance(err)
+        self.rightPid.setAbsoluteTolerance(err)
+    def pidDrive(self, dist, power=1, direction=EncoderDrive.kStraight):
+        self.leftPid.enable()
+        self.rightPid.enable()
         self.leftEncoder.reset()
         self.rightEncoder.reset()
-        self.leftPid.setSetpoint(direction*dist[0])
-        self.rightPid.setSetpoint(direction*dist[1])
-    def PidDone(self):
+        self.leftPid.setOutputRange(-power, power)
+        self.rightPid.setOutputRange(-power, power)
+        self.leftPid.setSetpoint(dist*direction[0])
+        self.rightPid.setSetpoint(dist*direction[1])
+    def pidDone(self):
         return self.leftPid.onTarget() and self.rightPid.onTarget()
+    def stopPid(self):
+        self.leftPid.disable()
+        self.rightPid.disable()
     def __pidwrite_left(self, v):
         """Wrapper around self.rearLeftMotor.pidwrite to feed MotorSafety. Should not be called directly."""
         self.rearLeftMotor.pidWrite(v)
@@ -56,6 +62,6 @@ class EncoderDrive(RobotDrive):
     def __addattr(self, arg, default, kwargs):
         try:
             setattr(self, arg, default)
-            kwargs.pop(arg)
+            setattr(self, arg, kwargs.pop(arg))
         except:
             pass
