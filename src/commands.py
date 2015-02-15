@@ -57,5 +57,3 @@ class move(command):
         return self.bot.chassis.pidDrive.pidDone()
     def stop(self):
         self.bot.chassis.stopPid()
-    def update(self):
-        pass
