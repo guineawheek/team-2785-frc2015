@@ -16,6 +16,7 @@ class MyRobot(IterativeRobot):
         self.pwr = 1
         self.controlDir = 1
         self.currentCommand = c.command()
+        self.commandEStopped = False
         self.commands = [
             c.moveToTote(self.robot),
             c.moveTote(self.robot, True),
@@ -71,8 +72,6 @@ class MyRobot(IterativeRobot):
     def testPeriodic(self):
         """This function is called periodically during test mode."""
         pass
-    def disabledInit(self):
-        self.currentCommand.stop()
     def doBindings(self):
         self.pwr = (self.happystick.getZ() + 2) / 2 + SmartDashboard.getNumber("Speed knob offset?")
         self.robot.chassis.arcadeDrive(self.pwr * self.happystick.getY() * self.controlDir, self.pwr * self.happystick.getX() * self.controlDir)
