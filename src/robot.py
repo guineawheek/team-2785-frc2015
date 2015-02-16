@@ -41,6 +41,8 @@ class MyRobot(IterativeRobot):
             c.moveTote(self.robot, False),
             c.move(self.robot, -12)
         ] if SmartDashboard.getBoolean("Reset autonomous commands on next enable? ") else self.commands
+        self.robot.nostril_solenoid.set(False)
+        self.robot.bakery_solenoid.set(False)
     def autonomousPeriodic(self):
         """This function is called periodically during autonomous."""
         """
@@ -69,6 +71,8 @@ class MyRobot(IterativeRobot):
     def testPeriodic(self):
         """This function is called periodically during test mode."""
         pass
+    def disabledInit(self):
+        self.currentCommand.stop()
     def doBindings(self):
         self.pwr = (self.happystick.getZ() + 2) / 2 + SmartDashboard.getNumber("Speed knob offset?")
         self.robot.chassis.arcadeDrive(self.pwr * self.happystick.getY() * self.controlDir, self.pwr * self.happystick.getX() * self.controlDir)
