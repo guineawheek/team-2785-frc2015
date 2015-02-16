@@ -15,10 +15,8 @@ class RobotMap:
     # following variables to use with your drivetrain subsystem.
     left_talon = CANTalon(0)
     right_talon = CANTalon(1)
-    nostril_talon = CANTalon(2)
     left_talon.enableBrakeMode(True)
     right_talon.enableBrakeMode(True)
-    nostril_talon.enableBrakeMode(True)
     
     encoder_ticks = 360
     wheel_d = 8
@@ -35,6 +33,7 @@ class RobotMap:
     
     flipper_solenoid = Solenoid(0)
     bakery_solenoid = Solenoid(1)
+    nostril_solenoid = Solenoid(2)
     
     nostril_switch = DigitalInput(4)
     bakery_switch_r = DigitalInput(5)

@@ -27,7 +27,6 @@ class MyRobot(IterativeRobot):
             c.moveTote(self.robot, False),
             c.move(self.robot, -12)
         ]
-        SmartDashboard.putNumber("Nostril talon during teleop, put values 0 to 1: ", 1)
         SmartDashboard.putBoolean("Reset autonomous commands on next enable? ", True)
         SmartDashboard.putNumber("Speed knob offset?", 0.4)
     def autonomousInit(self):
@@ -80,11 +79,10 @@ class MyRobot(IterativeRobot):
         self.robot.flipper_solenoid.set(self.happystick.getTrigger())
 
         if self.happystick.getRawButton(5):
-            self.robot.nostril_talon.set(SmartDashboard.getNumber("Nostril talon speed, put values 0 to 1: "))
+            self.robot.nostril_solenoid.set(True)
         elif self.happystick.getRawButton(4):
-            self.robot.nostril_talon.set(-SmartDashboard.getNumber("Nostril talon speed, put values 0 to 1: "))
-        else:
-            self.robot.nostril_tal.stopMotor()
+            self.robot.nostril_solenoid.set(False)
+
         if self.happystick.getRawButton(6):
             self.robot.left_encoder.reset()
             self.robot.right_encoder.rightEncoder.reset()

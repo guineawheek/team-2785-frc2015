@@ -30,21 +30,15 @@ class moveToTote(command):
 class moveTote(command):
     kLiftingTime = 2
     def __init__(self, robotclass, up=True):
-        self.motor = robotclass.nostril_talon
+        self.sol = robotclass.nostril_solenoid
         self.up = up
-        self.__lifting = False
         self.__lifting_timestamp = 0
     def start(self):
-        self.__lifting = True
-        self.motor.set(1 if self.up else -1)
+        self.sol.set(self.up)
         self.__lifting_timestamp = time()
     def done(self):
         return time() >= self.__lifting_timestamp + moveTote.kLiftingTime
-    def stop(self):
-        self.motor.stopMotor()
-        self.__lifting = False
-    def update(self):
-        self.motor.feed()
+
 class move(command):
     def __init__(self, robotclass, dist, power=1, direction=EncoderDrive.kStraight):
         self.bot = robotclass
