@@ -16,7 +16,6 @@ class MyRobot(IterativeRobot):
         self.pwr = 1
         self.controlDir = 1
         self.currentCommand = c.command()
-        self.commandEStopped = False
         self.commands = [
             c.moveToTote(self.robot),
             c.moveTote(self.robot, True),
