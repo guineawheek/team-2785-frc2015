@@ -10,7 +10,8 @@
 import socket
 import select
 import time
-import threading
+import signal
+import os
  
 # Changing the buffer_size and delay, you can improve the speed and bandwidth.
 # But when buffer get to high or delay go too down, you can broke things
@@ -96,5 +97,10 @@ class TheServer:
 def run(listening_port):
     server = TheServer('', listening_port)
     server.main_loop()
-sthread = threading.Thread(target=run, args=(listening_port), name="proxy_thread")
-sthread.start()
+def term():
+    os.remove("/home/lvuser/.pylock")
+    exit()
+if not os.path.exists("/home/lvuser/.pylock"):
+    open("/home/lvuser/.pylock", "a").write(str(os.getpid()))
+    signal.signal(signal.SIGTERM, term)
+    run(listening_port)
