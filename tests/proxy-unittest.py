@@ -17,9 +17,9 @@ import os
 # But when buffer get to high or delay go too down, you can broke things
 buffer_size = 4096
 delay = 0.0001
-forward_to = ("localhost", 22)
+forward_to = ("localhost", 902)
 listening_port = 5800 
-lockfile = "/home/lvuser/.pylock"
+lockfile = "/home/LiuDY/.pylock"
 # leave this between 5800 and 5810, these are Team Use ports
 
 
