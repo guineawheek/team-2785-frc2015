@@ -17,6 +17,7 @@ from robot_map import RobotMap
 from PidDrive import EncoderDrive
 from copy import deepcopy
 import commands as c
+import proxy
 class MyRobot(IterativeRobot):
     
     def robotInit(self):
