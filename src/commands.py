@@ -16,6 +16,9 @@ class command:
         return True
     def update(self):
         pass
+class endcommand(command):
+    def done(self):
+        return False
 class moveToTote(command):
     def __init__(self, robotclass):
         self.bot = robotclass
