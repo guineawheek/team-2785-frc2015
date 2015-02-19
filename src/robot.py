@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#TODO: Add camera servo code on PWM 0
+
 """
 Strategy:
     move forward 4 feet until recycle limit activated.
