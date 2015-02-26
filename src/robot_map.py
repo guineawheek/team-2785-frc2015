@@ -27,7 +27,7 @@ class RobotMap:
     right_encoder.setDistancePerPulse(wheel_d/encoder_ticks)
     left_encoder = Encoder(2,3)
     left_encoder.setPIDSourceParameter(Encoder.PIDSourceParameter.kDistance)
-    left_encoder.setDistancePerPulse(wheel_d/RobotMap.encoder_ticks)
+    left_encoder.setDistancePerPulse(wheel_d/encoder_ticks)
     
     chassis = EncoderDrive(left_talon, right_talon, leftEncoder=left_encoder, rightEncoder=right_encoder)
     

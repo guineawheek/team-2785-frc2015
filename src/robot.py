@@ -15,10 +15,15 @@ Strategy:
 from wpilib import *
 from robot_map import RobotMap
 from PidDrive import EncoderDrive
-from copy import deepcopy
+
 import commands as c
 import os
 os.system("/usr/bin/env python3 proxy.py & disown")
+def deepcopy(src):
+    ret = []
+    for i in range(0, len(src)):
+        ret.append(src[i])
+    return ret
 class MyRobot(IterativeRobot):
     
     def robotInit(self):

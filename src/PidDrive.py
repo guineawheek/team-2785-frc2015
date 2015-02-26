@@ -37,7 +37,7 @@ class EncoderDrive(RobotDrive):
     def setMaxError(self, err):
         self.leftPid.setAbsoluteTolerance(err)
         self.rightPid.setAbsoluteTolerance(err)
-    def pidDrive(self, dist, power=1, direction=EncoderDrive.kStraight):
+    def pidDrive(self, dist, power=1, direction=kStraight):
         self.leftPid.enable()
         self.rightPid.enable()
         self.leftEncoder.reset()
