@@ -18,7 +18,7 @@ from PidDrive import EncoderDrive
 
 import commands as c
 import os
-os.system("/usr/bin/env python3 proxy.py & disown")
+
 def deepcopy(src):
     ret = []
     for i in range(0, len(src)):
@@ -105,4 +105,8 @@ class MyRobot(IterativeRobot):
             s.putNumber("Right bakery switch pressed? ", self.robot.bakery_switch_r.get())
             s.putNumber("Nostril switch pressed? ", self.robot.nostril_switch.get())
 if __name__ == "__main__":
+    try:
+        os.system("/usr/bin/env python3 proxy.py & disown")
+    except:
+        print("No proxy darnit.")
     run(MyRobot)

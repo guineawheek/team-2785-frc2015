@@ -54,3 +54,14 @@ class move(command):
         return self.bot.chassis.pidDrive.pidDone()
     def stop(self):
         self.bot.chassis.stopPid()
+class moveRack(command):
+    kLiftingTime = 2
+    def __init__(self, robotclass, up=True):
+        self.sol = robotclass.bakery_solenoid
+        self.up = up
+        self.__lifting_timestamp = 0
+    def start(self):
+        self.sol.set(self.up)
+        self.__lifting_timestamp = time()
+    def done(self):
+        return time() >= self.__lifting_timestamp + moveRack.kLiftingTime
